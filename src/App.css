@@ -1,38 +1,129 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-image: linear-gradient(120.37deg, #08433F 3.83%, rgba(19, 16, 81, 0.952588) 15.07%, rgba(74, 221, 241, 0.43) 104.17%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.mainDiv{
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.h1{
+  margin-top: 5rem ;
+  margin-bottom: 3rem;
   color: white;
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+h5{
+  font-weight: 400;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+nav{
+  height: 3.5rem;
+  background-color: #070A23;
+  width: 100%;
 }
+
+.mainInput{
+  height: 3.5rem;
+  width: 50vw;
+  border: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  outline: none;
+  font-size: 14px ;
+}
+
+.mainBtn{
+  height: 3.6rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .1s;
+  background-image: linear-gradient(300.26deg, #2AABF4 -49.74%, #73FF04 141.05%);
+}
+
+.mainBtn:hover{
+  background-image: linear-gradient(300.26deg, #1f8ece -49.74%, #52ac09 141.05%);
+}
+
+.todoDiv{
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2.5rem 0;
+  background-image: linear-gradient(85.59deg, #FFE247 -21.94%, #F93434 150.22%);
+}
+
+.checkbox{
+  height: 1rem;
+  width: 1rem;
+  margin:0 1rem;
+  
+}
+
+.textDiv{
+  display: flex;
+  align-items: center;
+}
+
+.btnDiv{
+  height: 100%;
+}
+
+.greenBtn{
+  background-color:#99D798 ;
+  height: 4rem;
+  width: 3.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all .1s;
+}
+
+.redBtn{
+  background-color: #FF9696;
+  height: 4rem;
+  width: 3.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all .1s;
+  
+}
+
+.greenBtn:hover{
+  background-color:#5dd65b ;
+}
+
+.redBtn:hover{
+  background-color:#d45454 ;
+}
+
+.fas{
+  font-size: 1.3rem;
+}
+
+.secondaryInput{
+  height: 1.7rem;
+  width: 150%;
+  border: none;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+}
+
+.todoTask{
+  width: 100%;
+  max-width: 20rem;
+}
+
+
