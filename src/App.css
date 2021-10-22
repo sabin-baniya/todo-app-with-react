@@ -11,6 +11,7 @@ body{
 .mainDiv{
   display: flex;
   justify-content: center;
+  min-height: 10vh;
 }
 
 .h1{
@@ -49,12 +50,14 @@ ul{
   justify-content: space-between;
 }
 
-ul > li{
+.link{
+  color: white;
+  text-decoration: none;
   cursor: pointer;
   transition: all .2s;
 }
 
-ul > li:hover{
+.link:hover{
   transform: scale(1.03);
 }
 
