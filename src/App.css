@@ -28,6 +28,34 @@ nav{
   height: 3.5rem;
   background-color: #070A23;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logo{
+  height: 35px;
+}
+
+.menuItems{
+  color: white;
+}
+
+ul{
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  width: 100%;
+  justify-content: space-between;
+}
+
+ul > li{
+  cursor: pointer;
+  transition: all .2s;
+}
+
+ul > li:hover{
+  transform: scale(1.03);
 }
 
 .mainInput{
