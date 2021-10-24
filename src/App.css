@@ -42,12 +42,15 @@ nav{
   color: white;
 }
 
-ul{
+.navul{
   display: flex;
   align-items: center;
   list-style-type: none;
   width: 100%;
   justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  margin-left: 1rem;
 }
 
 .link{
@@ -157,4 +160,95 @@ ul{
   max-width: 20rem;
 }
 
+.habitList{
+  background-image: linear-gradient(92.87deg, #1581FF -14.83%, #6A1588 130%);
+  margin-top: 2rem;
+  color: white;
+  cursor: pointer;
+  position: relative;
+}
 
+.habitList:hover{
+  background-image: linear-gradient(120deg, #1270db -14.83%, #53126b 130%);
+}
+
+.habitList:hover .fas{
+  margin-bottom: 0rem;
+  animation: arrowAnimation 1s linear infinite;
+}
+
+.habits{
+  height: 0;
+  transition: height 1s ease-in-out;
+}
+
+.showHabits{
+  height: fit-content;
+  transition: height 1s ease-in-out;
+  width: 90%;
+}
+
+.List{
+  list-style: none;
+}
+
+.sideBySide{
+  display: flex;
+  align-items: center
+}
+
+.habits > div{
+  display: none;
+}
+
+.displayBlock{
+  display: block;
+}
+
+.topPart{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topPart > p{
+  padding: 0 1rem;
+}
+
+.forVL{
+  position: relative;
+}
+
+.forVL::before{
+  content: '';
+  height: 150%;
+  width: 2px;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: -6px;
+  left: -5px;
+}
+
+.arrow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0;
+}
+
+.fas{
+  margin-bottom: 2rem;
+}
+
+@keyframes arrowAnimation {
+
+  from {
+    margin-bottom: 2rem;
+  }
+
+  to{
+    margin-bottom: 1rem;
+  }
+  
+}

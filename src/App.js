@@ -114,7 +114,7 @@ function App() {
         </div>
 
         <div className="menuItems">
-          <ul>
+          <ul className="navul">
             <li>
               <Link to="/" className="link">
                 Todo Manager
