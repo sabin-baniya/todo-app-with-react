@@ -5,8 +5,10 @@ const HabitTracker = () => {
     const [input, setInput] = useState('');
     const [habit, setHabit] = useState(JSON.parse(localStorage.getItem('habits')) || []);
     const [habitList, setHabitList] = useState(JSON.parse(localStorage.getItem('habitList')) || []);
-    const [showHabit, setShowHabit] = useState('false')
+    const [showHabit, setShowHabit] = useState(false)
+    const [habitAdded, setHabitAdded] = useState(0)
 
+    //this is working --> ok
     useEffect(() => {
         let time = new Date().getTime();
         let startingDay = Math.ceil(time / 1000 * 60 * 60 * 24);
@@ -22,24 +24,25 @@ const HabitTracker = () => {
         }
     }, [])
 
-
-    //save habits to  localstorage //this is woring --> ok
+    //save habits to  localstorage //this is working --> ok
     useEffect(() => {
         const habits = JSON.parse(localStorage.getItem('habits')) || [];
         if (habits.length > 0) {
             if (habit.length > 0) {
                 const jsonData = JSON.stringify(habit)
                 localStorage.setItem('habits', jsonData)
+
+                setHabitAdded(habitAdded + 1);
             }
             return
         } else {
             localStorage.setItem('habits', JSON.stringify(habit))
         }
+        setHabitAdded(habitAdded + 1);
     }, [habit])
 
-    const callAfterHabitSet = () => {
-        const habitListFromLocalStorage = JSON.parse(localStorage.getItem('habitList'));
-
+    //this is working --> ok
+    const callAfterHabitSet = (habitListFromLocalStorage, checkArray) => {
         if (!habitListFromLocalStorage) {
             localStorage.setItem('habitList', JSON.stringify(habitList))
         }
@@ -48,13 +51,6 @@ const HabitTracker = () => {
             const today = new Date().toLocaleDateString();
 
             //check if today's habit list has already been added by comparing date.
-
-            const checkArray = habitListFromLocalStorage.filter((habit) => {
-                if (habit.date !== today) {
-                    return true
-                }
-                return false
-            })
 
 
             if (habitListFromLocalStorage.length >= 0) {
@@ -73,6 +69,15 @@ const HabitTracker = () => {
         const today = new Date().toLocaleDateString()
         const startDate = JSON.parse(localStorage.getItem('startingDate'))
 
+        const habitListFromLocalStorage = JSON.parse(localStorage.getItem('habitList'));
+
+        const checkArray = habitListFromLocalStorage.filter((habit) => {
+            if (habit.date !== today) {
+                return true
+            }
+            return false
+        })
+
         if (habit.length > 0) {
             if (today >= startDate.startingDate) {
                 const todaysList = {
@@ -81,12 +86,22 @@ const HabitTracker = () => {
                     completed: 0
                 }
 
-                setHabitList([...habitList, todaysList])
-                callAfterHabitSet();
+                if (habitListFromLocalStorage.length >= 0) {
+                    if (checkArray.length < habitListFromLocalStorage.length) {
+
+                    } else {
+
+                        setHabitList([todaysList, ...habitList])
+
+                    }
+                }
+
+                callAfterHabitSet(habitListFromLocalStorage, checkArray);
             }
         }
     }, [])
 
+    //this is working --> ok
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -101,12 +116,46 @@ const HabitTracker = () => {
 
         setHabit([...habit, newHabit]);
         setInput('');
+        setHabitAdded(habitAdded + 1)
     }
+
+    useEffect(() => {
+        const habitsFromLocalStorage = JSON.parse(localStorage.getItem('habits'));
+        const habitListFromLocalStorage = JSON.parse(localStorage.getItem('habitList'));
+
+        if (habitsFromLocalStorage) {
+            const updatedHabitList = habitListFromLocalStorage.map((habitList) => {
+                if (habitList.date === new Date().toLocaleDateString()) {
+                    habitList.habits = { ...habit }
+                }
+                return habitList
+            })
+
+            localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
+        }
+
+
+    }, [habitAdded])
+
 
     let doesExist = JSON.parse(localStorage.getItem('habitList')) || []
 
     if (doesExist.length === 0) {
         callAfterHabitSet();
+    }
+
+    //this is working --> ok
+    const isTodaysHabitSet = doesExist.filter((habit) => {
+        if (habit.date === new Date().toLocaleDateString()) {
+            return true
+        }
+        return false
+    })
+
+    //this is working --> ok
+    if (isTodaysHabitSet.length === 0) {
+        callAfterHabitSet();
+
     }
 
     const forMap = JSON.parse(localStorage.getItem('habitList')) || []
@@ -144,11 +193,12 @@ const HabitTracker = () => {
                                 <ul className="flex">
                                     {
                                         Object.keys(habits).map((key) => (
-                                            <div className={showHabit ? "showHabits" : "habits"} key={habits[key].id}>
+                                            <div className={showHabit ? "showHabits margin-bottom" : "habits"} key={habits[key].id}>
+
                                                 <div className={showHabit ? "sideBySide" : "sideBySide displayBlock"}>
 
-                                                    <input type="checkbox" className="checkbox" id={habits[key].id} />
-                                                    <label htmlFor={habits[key].id}>
+                                                    <input onClick={(e) => e.stopPropagation()} type="checkbox" className="checkbox" id={habits[key].id} />
+                                                    <label htmlFor={habits[key].id} onClick={(e) => e.stopPropagation()}>
                                                         <li key={key} className="List">{habits[key].habit}</li>
                                                     </label>
 
@@ -165,7 +215,7 @@ const HabitTracker = () => {
                         ))
                     }
                 </div>
-            </div>
+            </div >
         </div >
     )
 }

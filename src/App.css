@@ -163,9 +163,11 @@ nav{
 .habitList{
   background-image: linear-gradient(92.87deg, #1581FF -14.83%, #6A1588 130%);
   margin-top: 2rem;
+  margin-bottom: 2rem;
   color: white;
   cursor: pointer;
   position: relative;
+  border-radius: 2px;
 }
 
 .habitList:hover{
@@ -192,9 +194,21 @@ nav{
   list-style: none;
 }
 
+.flex>.margin-bottom:last-child{
+  margin-bottom: 3rem;
+}
+
+.flex{
+  cursor: default
+}
+
 .sideBySide{
   display: flex;
-  align-items: center
+  align-items: center;
+}
+
+.sideBySide > input, .sideBySide > label{
+  cursor: pointer;
 }
 
 .habits > div{
