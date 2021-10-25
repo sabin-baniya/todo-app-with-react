@@ -12,6 +12,8 @@ body{
   display: flex;
   justify-content: center;
   min-height: 10vh;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .h1{
@@ -248,8 +250,31 @@ nav{
   height: 0;
 }
 
-.fas{
+.fa-chevron-up, .fa-chevron-down{
   margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 600px){
+  .habitList{
+    width: 100%
+  }
+  
+}
+
+@media screen and (max-width: 345px){
+  .mainInput{
+    width: 45vw
+  }
+
+  .mainBtn{
+    font-size: 0.8rem;
+    width: 6rem;
+    height: 3.65rem;
+    padding: 0 0.5rem;
+  }
+
+
+  
 }
 
 @keyframes arrowAnimation {

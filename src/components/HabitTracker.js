@@ -6,6 +6,7 @@ const HabitTracker = () => {
     const [habit, setHabit] = useState(JSON.parse(localStorage.getItem('habits')) || []);
     const [habitList, setHabitList] = useState(JSON.parse(localStorage.getItem('habitList')) || []);
     const [habitAdded, setHabitAdded] = useState(0)
+    const [totalHabits, setTotalHabits] = useState((JSON.parse(localStorage.getItem('habits'))) || [])
 
     //this is working --> ok
     useEffect(() => {
@@ -93,7 +94,7 @@ const HabitTracker = () => {
                 callAfterHabitSet(habitListFromLocalStorage, checkArray);
             }
         }
-    }, [])
+    }, [habitAdded])
 
     const thisFunction = (newHabit) => {
         const habitsFromLocalStorage = JSON.parse(localStorage.getItem('habits'));
@@ -103,7 +104,7 @@ const HabitTracker = () => {
         if (habitsFromLocalStorage) {
             const updatedHabitList = habitListFromLocalStorage.map((habitList) => {
                 if (habitList.date === new Date().toLocaleDateString()) {
-                    // console.log(...habit)
+
                     let hbt = spreadedHabitList[0].habits
                     const length = Object.keys(hbt).length
                     let newObj = new Object();
@@ -117,6 +118,7 @@ const HabitTracker = () => {
             })
 
             localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
+            setHabitAdded(habitAdded + 1)
         }
 
     }
@@ -136,6 +138,7 @@ const HabitTracker = () => {
 
         thisFunction(newHabit);
 
+        setTotalHabits(totalHabits + 1)
         setHabit([...habit, newHabit]);
         setInput('');
     }
@@ -182,12 +185,20 @@ const HabitTracker = () => {
         const updatedHabitList = forMap.map((habit) => {
             if (habit.date === new Date().toLocaleDateString()) {
                 const todaysHabitList = habit.habits;
+                let completed = habit.completed;
 
                 const keys = Object.keys(todaysHabitList)
 
                 const todaysUpdatedHabitList = keys.map(key => {
                     if (todaysHabitList[key].id === id) {
                         todaysHabitList[key].isCompleted = !todaysHabitList[key].isCompleted
+                        if (todaysHabitList[key].isCompleted) {
+                            completed++
+                        }
+                        if (!todaysHabitList[key].isCompleted) {
+                            completed--
+                        }
+
                         return todaysHabitList[key]
                     }
                     return todaysHabitList[key]
@@ -195,6 +206,7 @@ const HabitTracker = () => {
                 const updated = Object.assign({}, todaysUpdatedHabitList)
 
                 habit.habits = updated
+                habit.completed = completed
                 return habit
 
             }
@@ -227,7 +239,7 @@ const HabitTracker = () => {
                         forMap.map(({ date, completed, habits }, index) => (
                             <div key={date} className="habitList"  >
                                 <div className="topPart" onClick={() => openDiv(index)}>
-                                    <p>{completed}/5 Completed</p>
+                                    <p>{completed}/{totalHabits.length} Completed</p>
                                     <p className="forVL">{date}</p>
                                 </div>
                                 {showHabit === index ? (
