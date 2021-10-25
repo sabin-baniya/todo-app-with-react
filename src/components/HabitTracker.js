@@ -195,6 +195,7 @@ const HabitTracker = () => {
         })
 
         localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
+        setHabitAdded(habitAdded + 1)
     }
 
 
@@ -230,7 +231,7 @@ const HabitTracker = () => {
                                                     <div className="sideBySide ">
                                                         <input onChange={(e) => checkboxFunction(e, habits[key].id)} type="checkbox" className="checkbox" id={habits[key].id} checked={habits[key].isCompleted} disabled={date === new Date().toLocaleDateString() ? false : true} />
 
-                                                        <label htmlFor={habits[key].id} onClick={(e) => checkboxFunction(e, habits[key].id)}>
+                                                        <label htmlFor={habits[key].id} >
                                                             <li key={key} className="List">{habits[key].habit}</li>
                                                         </label>
 
