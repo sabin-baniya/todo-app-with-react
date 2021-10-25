@@ -5,7 +5,6 @@ const HabitTracker = () => {
     const [input, setInput] = useState('');
     const [habit, setHabit] = useState(JSON.parse(localStorage.getItem('habits')) || []);
     const [habitList, setHabitList] = useState(JSON.parse(localStorage.getItem('habitList')) || []);
-    const [showHabit, setShowHabit] = useState(false)
     const [habitAdded, setHabitAdded] = useState(0)
 
     //this is working --> ok
@@ -48,11 +47,6 @@ const HabitTracker = () => {
         }
 
         if (habitListFromLocalStorage) {
-            const today = new Date().toLocaleDateString();
-
-            //check if today's habit list has already been added by comparing date.
-
-
             if (habitListFromLocalStorage.length >= 0) {
                 if (checkArray.length < habitListFromLocalStorage.length) {
 
@@ -101,6 +95,28 @@ const HabitTracker = () => {
         }
     }, [])
 
+    const thisFunction = (newHabit) => {
+        const habitsFromLocalStorage = JSON.parse(localStorage.getItem('habits'));
+        const habitListFromLocalStorage = JSON.parse(localStorage.getItem('habitList'));
+        let spreadedHabitList = { ...habitListFromLocalStorage }
+
+        if (habitsFromLocalStorage) {
+            const updatedHabitList = habitListFromLocalStorage.map((habitList) => {
+                if (habitList.date === new Date().toLocaleDateString()) {
+                    // console.log(...habit)
+                    let hbt = spreadedHabitList[0].habits
+                    let newHbt = Object.assign(hbt, { newHabit })
+                    habitList.habits = { ...newHbt }
+                    return habitList
+                }
+                return habitList
+            })
+
+            localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
+        }
+
+    }
+
     //this is working --> ok
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -114,30 +130,14 @@ const HabitTracker = () => {
             isCompleted: false
         }
 
+        thisFunction(newHabit);
+
         setHabit([...habit, newHabit]);
         setInput('');
-        setHabitAdded(habitAdded + 1)
     }
 
-    useEffect(() => {
-        const habitsFromLocalStorage = JSON.parse(localStorage.getItem('habits'));
-        const habitListFromLocalStorage = JSON.parse(localStorage.getItem('habitList'));
 
-        if (habitsFromLocalStorage) {
-            const updatedHabitList = habitListFromLocalStorage.map((habitList) => {
-                if (habitList.date === new Date().toLocaleDateString()) {
-                    habitList.habits = { ...habit }
-                }
-                return habitList
-            })
-
-            localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
-        }
-
-
-    }, [habitAdded])
-
-
+    //this is working --> ok
     let doesExist = JSON.parse(localStorage.getItem('habitList')) || []
 
     if (doesExist.length === 0) {
@@ -160,10 +160,42 @@ const HabitTracker = () => {
 
     const forMap = JSON.parse(localStorage.getItem('habitList')) || []
 
-    const openDiv = () => {
-        setShowHabit(!showHabit)
+    const [showHabit, setShowHabit] = useState(null)
+
+    const openDiv = (index) => {
+        if (showHabit === index) {
+            return setShowHabit(null)
+        }
+        setShowHabit(index);
     }
 
+    const checkboxFunction = (e, id) => {
+        e.stopPropagation();
+
+        const updatedHabitList = forMap.map((habit) => {
+            if (habit.date === new Date().toLocaleDateString()) {
+                const todaysHabitList = habit.habits;
+
+                const keys = Object.keys(todaysHabitList)
+
+                const todaysUpdatedHabitList = keys.map(key => {
+                    if (todaysHabitList[key].id === id) {
+                        todaysHabitList[key].isCompleted = !todaysHabitList[key].isCompleted
+                        return todaysHabitList[key]
+                    }
+                    return todaysHabitList[key]
+                })
+                const updated = Object.assign({}, todaysUpdatedHabitList)
+
+                habit.habits = updated
+                return habit
+
+            }
+            return habit
+        })
+
+        localStorage.setItem('habitList', JSON.stringify(updatedHabitList))
+    }
 
 
     return (
@@ -184,32 +216,34 @@ const HabitTracker = () => {
 
                 <div className="habitDiv">
                     {
-                        forMap.map(({ date, completed, habits }) => (
-                            <div key={date} className="habitList" onClick={openDiv}>
-                                <div className="topPart">
+                        forMap.map(({ date, completed, habits }, index) => (
+                            <div key={date} className="habitList"  >
+                                <div className="topPart" onClick={() => openDiv(index)}>
                                     <p>{completed}/5 Completed</p>
                                     <p className="forVL">{date}</p>
                                 </div>
-                                <ul className="flex">
-                                    {
-                                        Object.keys(habits).map((key) => (
-                                            <div className={showHabit ? "showHabits margin-bottom" : "habits"} key={habits[key].id}>
+                                {showHabit === index ? (
+                                    <ul className="flex">
+                                        {
+                                            Object.keys(habits).map((key) => (
+                                                <div className="habits" key={habits[key].id}>
+                                                    <div className="sideBySide ">
+                                                        <input onChange={(e) => checkboxFunction(e, habits[key].id)} type="checkbox" className="checkbox" id={habits[key].id} checked={habits[key].isCompleted} disabled={date === new Date().toLocaleDateString() ? false : true} />
 
-                                                <div className={showHabit ? "sideBySide" : "sideBySide displayBlock"}>
+                                                        <label htmlFor={habits[key].id} onClick={(e) => checkboxFunction(e, habits[key].id)}>
+                                                            <li key={key} className="List">{habits[key].habit}</li>
+                                                        </label>
 
-                                                    <input onClick={(e) => e.stopPropagation()} type="checkbox" className="checkbox" id={habits[key].id} />
-                                                    <label htmlFor={habits[key].id} onClick={(e) => e.stopPropagation()}>
-                                                        <li key={key} className="List">{habits[key].habit}</li>
-                                                    </label>
-
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        ))
-                                    }
-                                </ul>
-                                <div className="arrow">
-                                    {showHabit ? (<i className="fas fa-chevron-up"></i>) : (<i className="fas fa-chevron-down"></i>)}
+                                            ))
+                                        }
+                                    </ul>
+                                ) : null}
+
+                                <div className="arrow" onClick={() => openDiv(index)}>
+                                    {showHabit === index ? (<i className="fas fa-chevron-up"></i>) : (<i className="fas fa-chevron-down"></i>)}
                                 </div>
                             </div>
                         ))
