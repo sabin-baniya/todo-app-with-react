@@ -130,3 +130,21 @@
         "completed": 0
     }
 ]
+
+[
+    {
+        "id": 3925,
+        "habit": "Meditation",
+        "isCompleted": false
+    },
+    {
+        "id": 6966,
+        "habit": "Exercise",
+        "isCompleted": false
+    },
+    {
+        "id": 4639,
+        "habit": "Journaling",
+        "isCompleted": false
+    }
+]

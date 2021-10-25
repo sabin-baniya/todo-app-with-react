@@ -105,7 +105,11 @@ const HabitTracker = () => {
                 if (habitList.date === new Date().toLocaleDateString()) {
                     // console.log(...habit)
                     let hbt = spreadedHabitList[0].habits
-                    let newHbt = Object.assign(hbt, { newHabit })
+                    const length = Object.keys(hbt).length
+                    let newObj = new Object();
+                    newObj[length] = newHabit
+
+                    let newHbt = Object.assign(hbt, newObj)
                     habitList.habits = { ...newHbt }
                     return habitList
                 }
@@ -162,6 +166,8 @@ const HabitTracker = () => {
 
     const [showHabit, setShowHabit] = useState(null)
 
+
+    //this is working --> ok
     const openDiv = (index) => {
         if (showHabit === index) {
             return setShowHabit(null)
@@ -169,6 +175,7 @@ const HabitTracker = () => {
         setShowHabit(index);
     }
 
+    //this is working --> ok
     const checkboxFunction = (e, id) => {
         e.stopPropagation();
 
