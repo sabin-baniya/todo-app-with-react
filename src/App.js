@@ -132,6 +132,7 @@ function App() {
 
       <Switch>
         <Route exact path="/">
+          {document.title="Todo List"}
           <div className="mainDiv">
             <div>
               <div className="h1">
