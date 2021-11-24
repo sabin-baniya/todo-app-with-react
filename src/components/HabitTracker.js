@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const HabitTracker = () => {
 
+    document.title = "Habit Tracker";
     const [input, setInput] = useState('');
     const [habit, setHabit] = useState(JSON.parse(localStorage.getItem('habits')) || []);
     const [habitList, setHabitList] = useState(JSON.parse(localStorage.getItem('habitList')) || []);
